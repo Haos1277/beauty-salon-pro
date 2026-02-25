@@ -1,380 +1,1104 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Люкс Салон Красоты — Преобразись в совершенство. Профессиональный уход, стрижки, окрашивание, СПА процедуры в Москве.">
-<title>LUMIÈRE — Салон Красоты Премиум Класса</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --gold:#C9A84C;--gold2:#E8D5A3;--dark:#0A0A0F;--dark2:#12121A;
-  --glass:rgba(201,168,76,0.08);--text:#F5F0E8
-}
-html{scroll-behavior:smooth}
-body{background:var(--dark);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
-#canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Люкс Салон Красоты — Преобразись в совершенство. Профессиональный уход, стрижки, окрашивание, СПА процедуры в Москве.">
+  <title>LUMIÈRE — Салон Красоты Премиум Класса</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
 
-/* NAV */
-nav{position:fixed;top:0;width:100%;z-index:100;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(201,168,76,0.1);backdrop-filter:blur(20px);background:rgba(10,10,15,0.6)}
-.logo{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);letter-spacing:6px;font-style:italic}
-.nav-links{display:flex;gap:40px;list-style:none}
-.nav-links a{color:rgba(245,240,232,0.7);text-decoration:none;font-size:13px;letter-spacing:2px;text-transform:uppercase;transition:color .3s}
-.nav-links a:hover{color:var(--gold)}
-.nav-btn{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:10px 28px;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.3s;font-family:'Inter',sans-serif}
-.nav-btn:hover{background:var(--gold);color:var(--dark)}
+    :root {
+      --gold: #C9A84C;
+      --gold2: #E8D5A3;
+      --dark: #0A0A0F;
+      --dark2: #12121A;
+      --glass: rgba(201, 168, 76, 0.08);
+      --text: #F5F0E8
+    }
 
-/* HERO */
-#hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;z-index:1;padding:120px 20px 60px}
-.hero-badge{display:inline-block;border:1px solid var(--gold);color:var(--gold);padding:6px 20px;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:30px;opacity:0}
-h1{font-family:'Playfair Display',serif;font-size:clamp(48px,8vw,110px);line-height:1.05;margin-bottom:30px;opacity:0}
-h1 em{color:var(--gold);font-style:italic}
-.hero-sub{font-size:16px;color:rgba(245,240,232,0.6);letter-spacing:1px;margin-bottom:50px;max-width:500px;mx:auto;opacity:0;line-height:1.8}
-.hero-btns{display:flex;gap:20px;justify-content:center;opacity:0;flex-wrap:wrap}
-.btn-primary{background:var(--gold);color:var(--dark);padding:16px 40px;font-size:13px;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;transition:.3s}
-.btn-primary:hover{background:var(--gold2);transform:translateY(-2px)}
-.btn-secondary{background:transparent;color:var(--gold);padding:16px 40px;font-size:13px;letter-spacing:2px;text-transform:uppercase;border:1px solid var(--gold);cursor:pointer;font-family:'Inter',sans-serif;transition:.3s}
-.btn-secondary:hover{background:rgba(201,168,76,0.1)}
-.hero-stats{display:flex;gap:60px;justify-content:center;margin-top:80px;opacity:0}
-.hero-stat{text-align:center}
-.hero-stat .num{font-family:'Playfair Display',serif;font-size:48px;color:var(--gold);display:block;line-height:1}
-.hero-stat .label{font-size:11px;letter-spacing:2px;color:rgba(245,240,232,0.5);text-transform:uppercase;margin-top:8px}
-.hero-line{width:1px;height:60px;background:rgba(201,168,76,0.3);align-self:center}
+    html {
+      scroll-behavior: smooth
+    }
 
-/* SCROLL INDICATOR */
-.scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0}
-.scroll-hint span{font-size:10px;letter-spacing:3px;color:rgba(245,240,232,0.4);text-transform:uppercase}
-.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s infinite}
-@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden
+    }
 
-/* SERVICES */
-#services{position:relative;z-index:1;padding:120px 60px}
-.section-header{text-align:center;margin-bottom:80px}
-.section-label{font-size:11px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:block}
-.section-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);line-height:1.2}
-.section-title em{color:var(--gold);font-style:italic}
-.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px;max-width:1400px;margin:0 auto}
-.service-card{background:var(--glass);border:1px solid rgba(201,168,76,0.1);padding:50px 40px;position:relative;overflow:hidden;transition:.4s;cursor:pointer}
-.service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.08),transparent);opacity:0;transition:.4s}
-.service-card:hover::before{opacity:1}
-.service-card:hover{border-color:rgba(201,168,76,0.4);transform:translateY(-4px)}
-.service-icon{font-size:40px;margin-bottom:24px;display:block}
-.service-card h3{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:16px;color:var(--gold2)}
-.service-card p{font-size:14px;line-height:1.8;color:rgba(245,240,232,0.6)}
-.service-price{margin-top:24px;font-size:22px;font-family:'Playfair Display',serif;color:var(--gold)}
-.service-price span{font-size:12px;font-family:'Inter',sans-serif;color:rgba(245,240,232,0.5);letter-spacing:1px;text-transform:uppercase}
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none
+    }
 
-/* MASTERS */
-#masters{position:relative;z-index:1;padding:120px 60px;background:rgba(201,168,76,0.02)}
-.masters-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:40px;max-width:1200px;margin:0 auto}
-.master-card{text-align:center}
-.master-avatar{width:180px;height:180px;margin:0 auto 24px;border-radius:50%;background:var(--dark2);border:2px solid var(--gold);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:70px}
-.master-avatar::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(201,168,76,0.2);animation:rotateBorder 8s linear infinite}
-@keyframes rotateBorder{to{transform:rotate(360deg)}}
-.master-card h3{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px}
-.master-card .role{font-size:12px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:12px}
-.master-card .exp{font-size:13px;color:rgba(245,240,232,0.5)}
-.stars{color:var(--gold);font-size:16px;margin-top:12px;letter-spacing:2px}
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+      backdrop-filter: blur(20px);
+      background: rgba(10, 10, 15, 0.6)
+    }
 
-/* PRICES */
-#prices{position:relative;z-index:1;padding:120px 60px}
-.prices-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;max-width:1100px;margin:0 auto}
-.price-card{border:1px solid rgba(201,168,76,0.15);padding:50px 40px;text-align:center;position:relative;transition:.4s}
-.price-card.featured{border-color:var(--gold);background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.04))}
-.price-card.featured::before{content:'ПОПУЛЯРНЫЙ';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--dark);padding:4px 20px;font-size:10px;letter-spacing:3px;font-weight:600}
-.plan-name{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:8px;color:var(--gold2)}
-.plan-desc{font-size:12px;color:rgba(245,240,232,0.5);letter-spacing:1px;margin-bottom:36px}
-.plan-price{font-family:'Playfair Display',serif;font-size:56px;color:var(--gold);line-height:1}
-.plan-price sup{font-size:20px;vertical-align:top;margin-top:12px;display:inline-block}
-.plan-price sub{font-size:14px;color:rgba(245,240,232,0.5);font-family:'Inter',sans-serif}
-.plan-features{list-style:none;margin:36px 0;text-align:left}
-.plan-features li{padding:12px 0;border-bottom:1px solid rgba(201,168,76,0.08);font-size:14px;color:rgba(245,240,232,0.7);display:flex;align-items:center;gap:12px}
-.plan-features li::before{content:'✦';color:var(--gold);font-size:10px;flex-shrink:0}
-.plan-btn{width:100%;padding:14px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:.3s}
-.plan-btn:hover,.price-card.featured .plan-btn{background:var(--gold);color:var(--dark)}
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      color: var(--gold);
+      letter-spacing: 6px;
+      font-style: italic
+    }
 
-/* BOOKING */
-#booking{position:relative;z-index:1;padding:120px 60px;background:rgba(201,168,76,0.03)}
-.booking-inner{max-width:700px;margin:0 auto;text-align:center}
-.booking-form{margin-top:60px;display:grid;gap:16px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:16px 20px;background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.2);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:.3s;-webkit-appearance:none}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);background:rgba(201,168,76,0.08)}
-.form-group select option{background:var(--dark2)}
-.form-group textarea{height:100px;resize:none}
-.submit-btn{background:var(--gold);color:var(--dark);border:none;padding:18px;font-size:13px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;font-weight:700;transition:.3s;width:100%;margin-top:8px}
-.submit-btn:hover{background:var(--gold2);transform:translateY(-2px)}
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none
+    }
 
-/* FOOTER */
-footer{position:relative;z-index:1;padding:60px;border-top:1px solid rgba(201,168,76,0.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:gap}
-.footer-logo{font-family:'Playfair Display',serif;font-size:24px;color:var(--gold);letter-spacing:6px;font-style:italic}
-.footer-info{font-size:13px;color:rgba(245,240,232,0.4);text-align:center;line-height:1.8}
-.footer-social{display:flex;gap:20px}
-.social-link{width:44px;height:44px;border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;color:var(--gold);text-decoration:none;font-size:16px;transition:.3s}
-.social-link:hover{border-color:var(--gold);background:rgba(201,168,76,0.1)}
-.divider{width:60px;height:1px;background:var(--gold);margin:0 auto 40px;opacity:0.4}
+    .nav-links a {
+      color: rgba(245, 240, 232, 0.7);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color .3s
+    }
 
-/* RESPONSIVE */
-@media(max-width:768px){
-  nav{padding:16px 24px}
-  .nav-links{display:none}
-  #hero,#services,#masters,#prices,#booking{padding:80px 24px}
-  .hero-stats{gap:30px}
-  .hero-line{display:none}
-  .form-row{grid-template-columns:1fr}
-  footer{flex-direction:column;gap:30px;text-align:center;padding:40px 24px}
-}
-</style>
+    .nav-links a:hover {
+      color: var(--gold)
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 10px 28px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: .3s;
+      font-family: 'Inter', sans-serif
+    }
+
+    .nav-btn:hover {
+      background: var(--gold);
+      color: var(--dark)
+    }
+
+    /* HERO */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 1;
+      padding: 120px 20px 60px
+    }
+
+    .hero-badge {
+      display: inline-block;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 6px 20px;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      opacity: 0
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(48px, 8vw, 110px);
+      line-height: 1.05;
+      margin-bottom: 30px;
+      opacity: 0
+    }
+
+    h1 em {
+      color: var(--gold);
+      font-style: italic
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(245, 240, 232, 0.6);
+      letter-spacing: 1px;
+      margin-bottom: 50px;
+      max-width: 500px;
+      mx: auto;
+      opacity: 0;
+      line-height: 1.8
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      opacity: 0;
+      flex-wrap: wrap
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 16px 40px;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      transition: .3s
+    }
+
+    .btn-primary:hover {
+      background: var(--gold2);
+      transform: translateY(-2px)
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--gold);
+      padding: 16px 40px;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid var(--gold);
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: .3s
+    }
+
+    .btn-secondary:hover {
+      background: rgba(201, 168, 76, 0.1)
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 60px;
+      justify-content: center;
+      margin-top: 80px;
+      opacity: 0
+    }
+
+    .hero-stat {
+      text-align: center
+    }
+
+    .hero-stat .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      color: var(--gold);
+      display: block;
+      line-height: 1
+    }
+
+    .hero-stat .label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: rgba(245, 240, 232, 0.5);
+      text-transform: uppercase;
+      margin-top: 8px
+    }
+
+    .hero-line {
+      width: 1px;
+      height: 60px;
+      background: rgba(201, 168, 76, 0.3);
+      align-self: center
+    }
+
+    /* SCROLL INDICATOR */
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0
+    }
+
+    .scroll-hint span {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: rgba(245, 240, 232, 0.4);
+      text-transform: uppercase
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s infinite
+    }
+
+    @keyframes scrollPulse {
+
+      0%,
+      100% {
+        opacity: .3;
+        transform: scaleY(1)
+      }
+
+      50% {
+        opacity: 1;
+        transform: scaleY(1.2)
+      }
+    }
+
+    /* SERVICES */
+    #services {
+      position: relative;
+      z-index: 1;
+      padding: 120px 60px
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 80px
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: block
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 1.2
+    }
+
+    .section-title em {
+      color: var(--gold);
+      font-style: italic
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2px;
+      max-width: 1400px;
+      margin: 0 auto
+    }
+
+    .service-card {
+      background: var(--glass);
+      border: 1px solid rgba(201, 168, 76, 0.1);
+      padding: 50px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: .4s;
+      cursor: pointer
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201, 168, 76, 0.08), transparent);
+      opacity: 0;
+      transition: .4s
+    }
+
+    .service-card:hover::before {
+      opacity: 1
+    }
+
+    .service-card:hover {
+      border-color: rgba(201, 168, 76, 0.4);
+      transform: translateY(-4px)
+    }
+
+    .service-icon {
+      font-size: 40px;
+      margin-bottom: 24px;
+      display: block
+    }
+
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      margin-bottom: 16px;
+      color: var(--gold2)
+    }
+
+    .service-card p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: rgba(245, 240, 232, 0.6)
+    }
+
+    .service-price {
+      margin-top: 24px;
+      font-size: 22px;
+      font-family: 'Playfair Display', serif;
+      color: var(--gold)
+    }
+
+    .service-price span {
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      color: rgba(245, 240, 232, 0.5);
+      letter-spacing: 1px;
+      text-transform: uppercase
+    }
+
+    /* MASTERS */
+    #masters {
+      position: relative;
+      z-index: 1;
+      padding: 120px 60px;
+      background: rgba(201, 168, 76, 0.02)
+    }
+
+    .masters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto
+    }
+
+    .master-card {
+      text-align: center
+    }
+
+    .master-avatar {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 24px;
+      border-radius: 50%;
+      background: var(--dark2);
+      border: 2px solid var(--gold);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-size: 70px
+    }
+
+    .master-avatar::after {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      animation: rotateBorder 8s linear infinite
+    }
+
+    @keyframes rotateBorder {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .master-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      margin-bottom: 8px
+    }
+
+    .master-card .role {
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 12px
+    }
+
+    .master-card .exp {
+      font-size: 13px;
+      color: rgba(245, 240, 232, 0.5)
+    }
+
+    .stars {
+      color: var(--gold);
+      font-size: 16px;
+      margin-top: 12px;
+      letter-spacing: 2px
+    }
+
+    /* PRICES */
+    #prices {
+      position: relative;
+      z-index: 1;
+      padding: 120px 60px
+    }
+
+    .prices-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2px;
+      max-width: 1100px;
+      margin: 0 auto
+    }
+
+    .price-card {
+      border: 1px solid rgba(201, 168, 76, 0.15);
+      padding: 50px 40px;
+      text-align: center;
+      position: relative;
+      transition: .4s
+    }
+
+    .price-card.featured {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, rgba(201, 168, 76, 0.12), rgba(201, 168, 76, 0.04))
+    }
+
+    .price-card.featured::before {
+      content: 'ПОПУЛЯРНЫЙ';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--dark);
+      padding: 4px 20px;
+      font-size: 10px;
+      letter-spacing: 3px;
+      font-weight: 600
+    }
+
+    .plan-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: var(--gold2)
+    }
+
+    .plan-desc {
+      font-size: 12px;
+      color: rgba(245, 240, 232, 0.5);
+      letter-spacing: 1px;
+      margin-bottom: 36px
+    }
+
+    .plan-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 56px;
+      color: var(--gold);
+      line-height: 1
+    }
+
+    .plan-price sup {
+      font-size: 20px;
+      vertical-align: top;
+      margin-top: 12px;
+      display: inline-block
+    }
+
+    .plan-price sub {
+      font-size: 14px;
+      color: rgba(245, 240, 232, 0.5);
+      font-family: 'Inter', sans-serif
+    }
+
+    .plan-features {
+      list-style: none;
+      margin: 36px 0;
+      text-align: left
+    }
+
+    .plan-features li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.08);
+      font-size: 14px;
+      color: rgba(245, 240, 232, 0.7);
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .plan-features li::before {
+      content: '✦';
+      color: var(--gold);
+      font-size: 10px;
+      flex-shrink: 0
+    }
+
+    .plan-btn {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid var(--gold);
+      background: transparent;
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: .3s
+    }
+
+    .plan-btn:hover,
+    .price-card.featured .plan-btn {
+      background: var(--gold);
+      color: var(--dark)
+    }
+
+    /* BOOKING */
+    #booking {
+      position: relative;
+      z-index: 1;
+      padding: 120px 60px;
+      background: rgba(201, 168, 76, 0.03)
+    }
+
+    .booking-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center
+    }
+
+    .booking-form {
+      margin-top: 60px;
+      display: grid;
+      gap: 16px
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(201, 168, 76, 0.05);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: .3s;
+      -webkit-appearance: none
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+      background: rgba(201, 168, 76, 0.08)
+    }
+
+    .form-group select option {
+      background: var(--dark2)
+    }
+
+    .form-group textarea {
+      height: 100px;
+      resize: none
+    }
+
+    .submit-btn {
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      padding: 18px;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      transition: .3s;
+      width: 100%;
+      margin-top: 8px
+    }
+
+    .submit-btn:hover {
+      background: var(--gold2);
+      transform: translateY(-2px)
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 60px;
+      border-top: 1px solid rgba(201, 168, 76, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: gap
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--gold);
+      letter-spacing: 6px;
+      font-style: italic
+    }
+
+    .footer-info {
+      font-size: 13px;
+      color: rgba(245, 240, 232, 0.4);
+      text-align: center;
+      line-height: 1.8
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 20px
+    }
+
+    .social-link {
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 16px;
+      transition: .3s
+    }
+
+    .social-link:hover {
+      border-color: var(--gold);
+      background: rgba(201, 168, 76, 0.1)
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 0 auto 40px;
+      opacity: 0.4
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:768px) {
+      nav {
+        padding: 16px 24px
+      }
+
+      .nav-links {
+        display: none
+      }
+
+      #hero,
+      #services,
+      #masters,
+      #prices,
+      #booking {
+        padding: 80px 24px
+      }
+
+      .hero-stats {
+        gap: 30px
+      }
+
+      .hero-line {
+        display: none
+      }
+
+      .form-row {
+        grid-template-columns: 1fr
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 30px;
+        text-align: center;
+        padding: 40px 24px
+      }
+    }
+  </style>
 </head>
+
 <body>
-<canvas id="canvas"></canvas>
+  <canvas id="canvas"></canvas>
 
-<nav>
-  <div class="logo">LUMIÈRE</div>
-  <ul class="nav-links">
-    <li><a href="#services">Услуги</a></li>
-    <li><a href="#masters">Мастера</a></li>
-    <li><a href="#prices">Цены</a></li>
-    <li><a href="#booking">Запись</a></li>
-  </ul>
-  <button class="nav-btn" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Записаться</button>
-</nav>
+  <nav>
+    <div class="logo">LUMIÈRE</div>
+    <ul class="nav-links">
+      <li><a href="#services">Услуги</a></li>
+      <li><a href="#masters">Мастера</a></li>
+      <li><a href="#prices">Цены</a></li>
+      <li><a href="#booking">Запись</a></li>
+    </ul>
+    <button class="nav-btn"
+      onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Записаться</button>
+  </nav>
 
-<section id="hero">
-  <div>
-    <div class="hero-badge">Премиум салон красоты · Москва</div>
-    <h1>Искусство <em>красоты</em><br>в каждой детали</h1>
-    <p class="hero-sub">Откройте новый уровень ухода за собой. Наши мастера создают образы, которые живут в памяти.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Записаться онлайн</button>
-      <button class="btn-secondary" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Наши услуги</button>
+  <section id="hero">
+    <div>
+      <div class="hero-badge">Премиум салон красоты · Москва</div>
+      <h1>Искусство <em>красоты</em><br>в каждой детали</h1>
+      <p class="hero-sub">Откройте новый уровень ухода за собой. Наши мастера создают образы, которые живут в памяти.
+      </p>
+      <div class="hero-btns">
+        <button class="btn-primary"
+          onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Записаться онлайн</button>
+        <button class="btn-secondary"
+          onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Наши услуги</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="num" data-target="8">0</span><span class="label">Лет опыта</span></div>
+        <div class="hero-line"></div>
+        <div class="hero-stat"><span class="num" data-target="2400">0</span><span class="label">Довольных
+            клиентов</span></div>
+        <div class="hero-line"></div>
+        <div class="hero-stat"><span class="num" data-target="15">0</span><span class="label">Мастеров</span></div>
+      </div>
     </div>
-    <div class="hero-stats">
-      <div class="hero-stat"><span class="num" data-target="8">0</span><span class="label">Лет опыта</span></div>
-      <div class="hero-line"></div>
-      <div class="hero-stat"><span class="num" data-target="2400">0</span><span class="label">Довольных клиентов</span></div>
-      <div class="hero-line"></div>
-      <div class="hero-stat"><span class="num" data-target="15">0</span><span class="label">Мастеров</span></div>
+    <div class="scroll-hint">
+      <span>Листай ниже</span>
+      <div class="scroll-line"></div>
     </div>
-  </div>
-  <div class="scroll-hint">
-    <span>Листай ниже</span>
-    <div class="scroll-line"></div>
-  </div>
-</section>
+  </section>
 
-<section id="services">
-  <div class="section-header">
-    <span class="section-label">Что мы делаем</span>
-    <h2 class="section-title">Ваши <em>услуги</em></h2>
-    <div class="divider"></div>
-  </div>
-  <div class="services-grid">
-    <div class="service-card"><span class="service-icon">✂️</span><h3>Стрижки и укладки</h3><p>Авторские стрижки от ведущих стилистов. Любой тип волос, любой желаемый образ — от классики до авангарда.</p><p class="service-price">от 2 500 ₽ <span>за процедуру</span></p></div>
-    <div class="service-card"><span class="service-icon">🎨</span><h3>Окрашивание</h3><p>Балаяж, омбре, сложное окрашивание, тонирование. Работаем только с профессиональными красителями Wella и L'Oréal.</p><p class="service-price">от 5 000 ₽ <span>за процедуру</span></p></div>
-    <div class="service-card"><span class="service-icon">💅</span><h3>Маникюр и педикюр</h3><p>Классический, аппаратный, комбинированный. Покрытие гель-лаком, наращивание, дизайн любой сложности.</p><p class="service-price">от 1 800 ₽ <span>за процедуру</span></p></div>
-    <div class="service-card"><span class="service-icon">✨</span><h3>Брови и ресницы</h3><p>Архитектура бровей, окрашивание хной, ламинирование, наращивание ресниц. Создаём идеальный взгляд.</p><p class="service-price">от 1 500 ₽ <span>за процедуру</span></p></div>
-    <div class="service-card"><span class="service-icon">🌸</span><h3>Уход за кожей лица</h3><p>Чистки, пилинги, маски, лифтинг-процедуры. Индивидуальный подбор программы ухода под ваш тип кожи.</p><p class="service-price">от 3 500 ₽ <span>за процедуру</span></p></div>
-    <div class="service-card"><span class="service-icon">🛁</span><h3>Спа-ритуалы</h3><p>Расслабляющий спа с использованием натуральных масел и экстрактов. Идеально для восстановления и отдыха.</p><p class="service-price">от 6 000 ₽ <span>за ритуал</span></p></div>
-  </div>
-</section>
-
-<section id="masters">
-  <div class="section-header">
-    <span class="section-label">Наша команда</span>
-    <h2 class="section-title">Мастера <em>своего дела</em></h2>
-    <div class="divider"></div>
-  </div>
-  <div class="masters-grid">
-    <div class="master-card"><div class="master-avatar">👩</div><h3>Виктория М.</h3><div class="role">Топ-стилист</div><div class="exp">12 лет опыта · более 800 работ</div><div class="stars">★★★★★</div></div>
-    <div class="master-card"><div class="master-avatar">👩‍🦱</div><h3>Анастасия В.</h3><div class="role">Колорист</div><div class="exp">8 лет опыта · эксперт по окрашиванию</div><div class="stars">★★★★★</div></div>
-    <div class="master-card"><div class="master-avatar">💁</div><h3>Елена С.</h3><div class="role">Мастер ногтевого сервиса</div><div class="exp">10 лет опыта · победитель конкурсов</div><div class="stars">★★★★★</div></div>
-    <div class="master-card"><div class="master-avatar">🧖</div><h3>Мария К.</h3><div class="role">Косметолог-эстетист</div><div class="exp">7 лет опыта · сертифицирован CIDESCO</div><div class="stars">★★★★★</div></div>
-  </div>
-</section>
-
-<section id="prices">
-  <div class="section-header">
-    <span class="section-label">Стоимость</span>
-    <h2 class="section-title">Прозрачные <em>цены</em></h2>
-    <div class="divider"></div>
-  </div>
-  <div class="prices-grid">
-    <div class="price-card">
-      <div class="plan-name">Базовый уход</div>
-      <div class="plan-desc">Для первого визита</div>
-      <div class="plan-price"><sup>от</sup>2 500<sub> ₽</sub></div>
-      <ul class="plan-features">
-        <li>Консультация стилиста</li><li>Стрижка волос</li><li>Укладка феном</li><li>Уход-маска для волос</li>
-      </ul>
-      <button class="plan-btn" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Выбрать</button>
-    </div>
-    <div class="price-card featured">
-      <div class="plan-name">Люкс-программа</div>
-      <div class="plan-desc">Самый популярный выбор</div>
-      <div class="plan-price"><sup>от</sup>12 000<sub> ₽</sub></div>
-      <ul class="plan-features">
-        <li>Стрижка + окрашивание</li><li>Маникюр + педикюр</li><li>Уход за бровями</li><li>Процедура для лица</li><li>Аромачай и перекус</li>
-      </ul>
-      <button class="plan-btn" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Выбрать</button>
-    </div>
-    <div class="price-card">
-      <div class="plan-name">День невесты</div>
-      <div class="plan-desc">Полное преображение</div>
-      <div class="plan-price"><sup>от</sup>25 000<sub> ₽</sub></div>
-      <ul class="plan-features">
-        <li>Свадебная укладка</li><li>Макияж невесты</li><li>Маникюр-педикюр</li><li>Спа ритуал</li><li>Шампанское в подарок</li>
-      </ul>
-      <button class="plan-btn" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Выбрать</button>
-    </div>
-  </div>
-</section>
-
-<section id="booking">
-  <div class="booking-inner">
+  <section id="services">
     <div class="section-header">
-      <span class="section-label">Запись онлайн</span>
-      <h2 class="section-title">Запишитесь <em>сейчас</em></h2>
+      <span class="section-label">Что мы делаем</span>
+      <h2 class="section-title">Ваши <em>услуги</em></h2>
       <div class="divider"></div>
-      <p style="color:rgba(245,240,232,0.6);font-size:15px;line-height:1.8">Оставьте заявку — мы свяжемся в течение 15 минут и подберём удобное время для вас</p>
     </div>
-    <form class="booking-form" onsubmit="handleSubmit(event)">
-      <div class="form-row">
-        <div class="form-group"><input type="text" placeholder="Ваше имя" required></div>
-        <div class="form-group"><input type="tel" placeholder="Номер телефона" required></div>
+    <div class="services-grid">
+      <div class="service-card"><div style="height:180px;overflow:hidden;border-radius:4px;margin-bottom:20px;margin:-50px -40px 20px"><img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=360&h=200&fit=crop&q=80" alt="" style="width:100%;height:100%;object-fit:cover"></div>
+        <h3>Стрижки и укладки</h3>
+        <p>Авторские стрижки от ведущих стилистов. Любой тип волос, любой желаемый образ — от классики до авангарда.</p>
+        <p class="service-price">от 2 500 ₽ <span>за процедуру</span></p>
       </div>
-      <div class="form-group">
-        <select>
-          <option value="">Выберите услугу</option>
-          <option>Стрижка и укладка</option><option>Окрашивание</option><option>Маникюр/Педикюр</option>
-          <option>Брови и ресницы</option><option>Уход за лицом</option><option>Спа-ритуал</option><option>Люкс-программа</option>
-        </select>
+      <div class="service-card"><div style="height:180px;overflow:hidden;border-radius:4px;margin-bottom:20px;margin:-50px -40px 20px"><img src="https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=360&h=200&fit=crop&q=80" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
+        <h3>Окрашивание</h3>
+        <p>Балаяж, омбре, сложное окрашивание, тонирование. Работаем только с профессиональными красителями Wella и
+          L'Oréal.</p>
+        <p class="service-price">от 5 000 ₽ <span>за процедуру</span></p>
       </div>
-      <div class="form-row">
-        <div class="form-group"><input type="date" min="2026-02-26"></div>
-        <div class="form-group">
-          <select><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option></select>
+      <div class="service-card"><div style="height:180px;overflow:hidden;border-radius:4px;margin-bottom:20px;margin:-50px -40px 20px"><img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=360&h=200&fit=crop&q=80" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
+        <h3>Маникюр и педикюр</h3>
+        <p>Классический, аппаратный, комбинированный. Покрытие гель-лаком, наращивание, дизайн любой сложности.</p>
+        <p class="service-price">от 1 800 ₽ <span>за процедуру</span></p>
+      </div>
+      <div class="service-card"><div style="height:180px;overflow:hidden;border-radius:4px;margin-bottom:20px;margin:-50px -40px 20px"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=360&h=200&fit=crop&q=80" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
+        <h3>Брови и ресницы</h3>
+        <p>Архитектура бровей, окрашивание хной, ламинирование, наращивание ресниц. Создаём идеальный взгляд.</p>
+        <p class="service-price">от 1 500 ₽ <span>за процедуру</span></p>
+      </div>
+      <div class="service-card"><div style="height:180px;overflow:hidden;border-radius:4px;margin-bottom:20px;margin:-50px -40px 20px"><img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=360&h=200&fit=crop&q=80" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
+        <h3>Уход за кожей лица</h3>
+        <p>Чистки, пилинги, маски, лифтинг-процедуры. Индивидуальный подбор программы ухода под ваш тип кожи.</p>
+        <p class="service-price">от 3 500 ₽ <span>за процедуру</span></p>
+      </div>
+      <div class="service-card"><div style="height:180px;overflow:hidden;border-radius:4px;margin-bottom:20px;margin:-50px -40px 20px"><img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=360&h=200&fit=crop&q=80" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
+        <h3>Спа-ритуалы</h3>
+        <p>Расслабляющий спа с использованием натуральных масел и экстрактов. Идеально для восстановления и отдыха.</p>
+        <p class="service-price">от 6 000 ₽ <span>за ритуал</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="masters">
+    <div class="section-header">
+      <span class="section-label">Наша команда</span>
+      <h2 class="section-title">Мастера <em>своего дела</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="masters-grid">
+      <div class="master-card">
+        <div class="master-avatar"><img src="https://i.pravatar.cc/180?img=47" alt="Виктория" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
+        <h3>Виктория М.</h3>
+        <div class="role">Топ-стилист</div>
+        <div class="exp">12 лет опыта · более 800 работ</div>
+        <div class="stars">★★★★★</div>
+      </div>
+      <div class="master-card">
+        <div class="master-avatar"><img src="https://i.pravatar.cc/180?img=44" alt="Анастасия" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
+        <h3>Анастасия В.</h3>
+        <div class="role">Колорист</div>
+        <div class="exp">8 лет опыта · эксперт по окрашиванию</div>
+        <div class="stars">★★★★★</div>
+      </div>
+      <div class="master-card">
+        <div class="master-avatar"><img src="https://i.pravatar.cc/180?img=49" alt="Елена" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
+        <h3>Елена С.</h3>
+        <div class="role">Мастер ногтевого сервиса</div>
+        <div class="exp">10 лет опыта · победитель конкурсов</div>
+        <div class="stars">★★★★★</div>
+      </div>
+      <div class="master-card">
+        <div class="master-avatar"><img src="https://i.pravatar.cc/180?img=43" alt="Мария" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
+        <h3>Мария К.</h3>
+        <div class="role">Косметолог-эстетист</div>
+        <div class="exp">7 лет опыта · сертифицирован CIDESCO</div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="prices">
+    <div class="section-header">
+      <span class="section-label">Стоимость</span>
+      <h2 class="section-title">Прозрачные <em>цены</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="prices-grid">
+      <div class="price-card">
+        <div class="plan-name">Базовый уход</div>
+        <div class="plan-desc">Для первого визита</div>
+        <div class="plan-price"><sup>от</sup>2 500<sub> ₽</sub></div>
+        <ul class="plan-features">
+          <li>Консультация стилиста</li>
+          <li>Стрижка волос</li>
+          <li>Укладка феном</li>
+          <li>Уход-маска для волос</li>
+        </ul>
+        <button class="plan-btn"
+          onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Выбрать</button>
+      </div>
+      <div class="price-card featured">
+        <div class="plan-name">Люкс-программа</div>
+        <div class="plan-desc">Самый популярный выбор</div>
+        <div class="plan-price"><sup>от</sup>12 000<sub> ₽</sub></div>
+        <ul class="plan-features">
+          <li>Стрижка + окрашивание</li>
+          <li>Маникюр + педикюр</li>
+          <li>Уход за бровями</li>
+          <li>Процедура для лица</li>
+          <li>Аромачай и перекус</li>
+        </ul>
+        <button class="plan-btn"
+          onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Выбрать</button>
+      </div>
+      <div class="price-card">
+        <div class="plan-name">День невесты</div>
+        <div class="plan-desc">Полное преображение</div>
+        <div class="plan-price"><sup>от</sup>25 000<sub> ₽</sub></div>
+        <ul class="plan-features">
+          <li>Свадебная укладка</li>
+          <li>Макияж невесты</li>
+          <li>Маникюр-педикюр</li>
+          <li>Спа ритуал</li>
+          <li>Шампанское в подарок</li>
+        </ul>
+        <button class="plan-btn"
+          onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Выбрать</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="booking">
+    <div class="booking-inner">
+      <div class="section-header">
+        <span class="section-label">Запись онлайн</span>
+        <h2 class="section-title">Запишитесь <em>сейчас</em></h2>
+        <div class="divider"></div>
+        <p style="color:rgba(245,240,232,0.6);font-size:15px;line-height:1.8">Оставьте заявку — мы свяжемся в течение 15
+          минут и подберём удобное время для вас</p>
+      </div>
+      <form class="booking-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group"><input type="text" placeholder="Ваше имя" required></div>
+          <div class="form-group"><input type="tel" placeholder="Номер телефона" required></div>
         </div>
-      </div>
-      <div class="form-group"><textarea placeholder="Пожелания или вопросы (необязательно)"></textarea></div>
-      <button type="submit" class="submit-btn">Отправить заявку</button>
-    </form>
-  </div>
-</section>
+        <div class="form-group">
+          <select>
+            <option value="">Выберите услугу</option>
+            <option>Стрижка и укладка</option>
+            <option>Окрашивание</option>
+            <option>Маникюр/Педикюр</option>
+            <option>Брови и ресницы</option>
+            <option>Уход за лицом</option>
+            <option>Спа-ритуал</option>
+            <option>Люкс-программа</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><input type="date" min="2026-02-26"></div>
+          <div class="form-group">
+            <select>
+              <option>09:00</option>
+              <option>10:00</option>
+              <option>11:00</option>
+              <option>12:00</option>
+              <option>13:00</option>
+              <option>14:00</option>
+              <option>15:00</option>
+              <option>16:00</option>
+              <option>17:00</option>
+              <option>18:00</option>
+              <option>19:00</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><textarea placeholder="Пожелания или вопросы (необязательно)"></textarea></div>
+        <button type="submit" class="submit-btn">Отправить заявку</button>
+      </form>
+    </div>
+  </section>
 
-<footer>
-  <div class="footer-logo">LUMIÈRE</div>
-  <div class="footer-info">
-    ул. Тверская, 15, Москва · +7 (495) 123-45-67<br>
-    Пн–Сб: 09:00–21:00 · Вс: 10:00–19:00<br>
-    © 2026 LUMIÈRE Beauty Studio
-  </div>
-  <div class="footer-social">
-    <a class="social-link" href="#">𝕏</a>
-    <a class="social-link" href="#">📷</a>
-    <a class="social-link" href="#">▶</a>
-  </div>
-</footer>
+  <footer>
+    <div class="footer-logo">LUMIÈRE</div>
+    <div class="footer-info">
+      ул. Тверская, 15, Москва · +7 (495) 123-45-67<br>
+      Пн–Сб: 09:00–21:00 · Вс: 10:00–19:00<br>
+      © 2026 LUMIÈRE Beauty Studio
+    </div>
+    <div class="footer-social">
+      <a class="social-link" href="#">𝕏</a>
+      <a class="social-link" href="#">📷</a>
+      <a class="social-link" href="#">▶</a>
+    </div>
+  </footer>
 
-<script>
-gsap.registerPlugin(ScrollTrigger);
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
 
-// THREE.JS PARTICLES
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({canvas:document.getElementById('canvas'),alpha:true,antialias:true});
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-camera.position.z = 3;
+    // THREE.JS PARTICLES
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    camera.position.z = 3;
 
-// Particles (golden glitter)
-const COUNT = 3000;
-const geo = new THREE.BufferGeometry();
-const pos = new Float32Array(COUNT * 3);
-const size = new Float32Array(COUNT);
-for(let i = 0; i < COUNT; i++){
-  pos[i*3] = (Math.random()-0.5)*12;
-  pos[i*3+1] = (Math.random()-0.5)*12;
-  pos[i*3+2] = (Math.random()-0.5)*8;
-  size[i] = Math.random() * 3 + 0.5;
-}
-geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-geo.setAttribute('size', new THREE.BufferAttribute(size, 1));
-const mat = new THREE.PointsMaterial({color:0xC9A84C, size:0.04, transparent:true, opacity:0.7, sizeAttenuation:true});
-const particles = new THREE.Points(geo, mat);
-scene.add(particles);
+    // Particles (golden glitter)
+    const COUNT = 3000;
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(COUNT * 3);
+    const size = new Float32Array(COUNT);
+    for (let i = 0; i < COUNT; i++) {
+      pos[i * 3] = (Math.random() - 0.5) * 12;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 12;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 8;
+      size[i] = Math.random() * 3 + 0.5;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('size', new THREE.BufferAttribute(size, 1));
+    // Create circular blurred texture for particles
+    const pCanvas = document.createElement('canvas');
+    pCanvas.width = 64; pCanvas.height = 64;
+    const pCtx = pCanvas.getContext('2d');
+    const pGrad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    pGrad.addColorStop(0, 'rgba(255,255,255,1)');
+    pGrad.addColorStop(0.3, 'rgba(255,255,255,0.8)');
+    pGrad.addColorStop(0.7, 'rgba(255,255,255,0.2)');
+    pGrad.addColorStop(1, 'rgba(255,255,255,0)');
+    pCtx.fillStyle = pGrad;
+    pCtx.fillRect(0, 0, 64, 64);
+    const pTex = new THREE.CanvasTexture(pCanvas);
 
-// Floating rings
-for(let i=0;i<5;i++){
-  const ring = new THREE.TorusGeometry(0.5+i*0.3, 0.008, 16, 100);
-  const rmat = new THREE.MeshBasicMaterial({color:0xC9A84C, transparent:true, opacity:0.1+i*0.05});
-  const mesh = new THREE.Mesh(ring, rmat);
-  mesh.position.set((Math.random()-0.5)*4, (Math.random()-0.5)*4, -2-i);
-  mesh.rotation.x = Math.random()*Math.PI;
-  mesh.userData.speed = 0.002+i*0.001;
-  scene.add(mesh);
-}
+    const mat = new THREE.PointsMaterial({ color: 0xC9A84C, size: 0.12, transparent: true, opacity: 0.8, sizeAttenuation: true, alphaMap: pTex, alphaTest: 0.001, depthWrite: false });
 
-let mouseX=0, mouseY=0;
-document.addEventListener('mousemove', e=>{mouseX=(e.clientX/window.innerWidth-0.5)*0.5;mouseY=(e.clientY/window.innerHeight-0.5)*0.5});
+    const particles = new THREE.Points(geo, mat);
+    scene.add(particles);
 
-function animate(){
-  requestAnimationFrame(animate);
-  particles.rotation.y += 0.0005;
-  particles.rotation.x += 0.0002;
-  camera.position.x += (mouseX - camera.position.x) * 0.02;
-  camera.position.y += (-mouseY - camera.position.y) * 0.02;
-  scene.children.forEach(c=>{if(c.userData.speed){c.rotation.x+=c.userData.speed;c.rotation.z+=c.userData.speed*0.7}});
-  renderer.render(scene, camera);
-}
-animate();
+    // Floating rings
+    for (let i = 0; i < 5; i++) {
+      const ring = new THREE.TorusGeometry(0.5 + i * 0.3, 0.008, 16, 100);
+      const rmat = new THREE.MeshBasicMaterial({ color: 0xC9A84C, transparent: true, opacity: 0.1 + i * 0.05 });
+      const mesh = new THREE.Mesh(ring, rmat);
+      mesh.position.set((Math.random() - 0.5) * 4, (Math.random() - 0.5) * 4, -2 - i);
+      mesh.rotation.x = Math.random() * Math.PI;
+      mesh.userData.speed = 0.002 + i * 0.001;
+      scene.add(mesh);
+    }
 
-window.addEventListener('resize',()=>{
-  camera.aspect=window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth,window.innerHeight);
-});
+    let mouseX = 0, mouseY = 0;
+    document.addEventListener('mousemove', e => { mouseX = (e.clientX / window.innerWidth - 0.5) * 0.5; mouseY = (e.clientY / window.innerHeight - 0.5) * 0.5 });
 
-// GSAP ANIMATIONS
-gsap.to('.hero-badge',{opacity:1,y:0,duration:1,delay:0.3});
-gsap.to('h1',{opacity:1,y:0,duration:1,delay:0.6,ease:'power3.out'});
-gsap.to('.hero-sub',{opacity:1,y:0,duration:1,delay:0.9});
-gsap.to('.hero-btns',{opacity:1,y:0,duration:1,delay:1.1});
-gsap.to('.hero-stats',{opacity:1,y:0,duration:1,delay:1.3});
-gsap.to('.scroll-hint',{opacity:1,duration:1,delay:2});
+    function animate() {
+      requestAnimationFrame(animate);
+      particles.rotation.y += 0.0005;
+      particles.rotation.x += 0.0002;
+      camera.position.x += (mouseX - camera.position.x) * 0.02;
+      camera.position.y += (-mouseY - camera.position.y) * 0.02;
+      scene.children.forEach(c => { if (c.userData.speed) { c.rotation.x += c.userData.speed; c.rotation.z += c.userData.speed * 0.7 } });
+      renderer.render(scene, camera);
+    }
+    animate();
 
-gsap.utils.toArray('.service-card').forEach((el,i)=>{
-  gsap.from(el,{scrollTrigger:{trigger:el,start:'top 85%'},opacity:0,y:40,duration:0.8,delay:i*0.1});
-});
-gsap.utils.toArray('.master-card').forEach((el,i)=>{
-  gsap.from(el,{scrollTrigger:{trigger:el,start:'top 85%'},opacity:0,scale:0.9,duration:0.8,delay:i*0.15});
-});
-gsap.utils.toArray('.price-card').forEach((el,i)=>{
-  gsap.from(el,{scrollTrigger:{trigger:el,start:'top 85%'},opacity:0,y:40,duration:0.8,delay:i*0.15});
-});
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 
-// Counter animation
-function animateCounter(el){
-  const target = parseInt(el.dataset.target);
-  gsap.to({val:0},{val:target,duration:2,ease:'power2.out',onUpdate:function(){el.textContent=Math.round(this.targets()[0].val).toLocaleString()}});
-}
-ScrollTrigger.create({trigger:'#hero .hero-stats',start:'top 80%',onEnter:()=>{
-  document.querySelectorAll('.hero-stat .num').forEach(el=>animateCounter(el));
-}});
+    // GSAP ANIMATIONS
+    gsap.to('.hero-badge', { opacity: 1, y: 0, duration: 1, delay: 0.3 });
+    gsap.to('h1', { opacity: 1, y: 0, duration: 1, delay: 0.6, ease: 'power3.out' });
+    gsap.to('.hero-sub', { opacity: 1, y: 0, duration: 1, delay: 0.9 });
+    gsap.to('.hero-btns', { opacity: 1, y: 0, duration: 1, delay: 1.1 });
+    gsap.to('.hero-stats', { opacity: 1, y: 0, duration: 1, delay: 1.3 });
+    gsap.to('.scroll-hint', { opacity: 1, duration: 1, delay: 2 });
 
-function handleSubmit(e){
-  e.preventDefault();
-  const btn = e.target.querySelector('.submit-btn');
-  btn.textContent = '✦ Заявка отправлена!';
-  btn.style.background = '#2a2a2a';
-  btn.style.color = 'var(--gold)';
-  btn.style.border = '1px solid var(--gold)';
-  setTimeout(()=>{btn.textContent='Отправить заявку';btn.style.background='var(--gold)';btn.style.color='var(--dark)'},3000);
-}
-</script>
+    gsap.utils.toArray('.service-card').forEach((el, i) => {
+      gsap.from(el, { scrollTrigger: { trigger: el, start: 'top 85%' }, opacity: 0, y: 40, duration: 0.8, delay: i * 0.1 });
+    });
+    gsap.utils.toArray('.master-card').forEach((el, i) => {
+      gsap.from(el, { scrollTrigger: { trigger: el, start: 'top 85%' }, opacity: 0, scale: 0.9, duration: 0.8, delay: i * 0.15 });
+    });
+    gsap.utils.toArray('.price-card').forEach((el, i) => {
+      gsap.from(el, { scrollTrigger: { trigger: el, start: 'top 85%' }, opacity: 0, y: 40, duration: 0.8, delay: i * 0.15 });
+    });
+
+    // Counter animation
+    function animateCounter(el) {
+      const target = parseInt(el.dataset.target);
+      gsap.to({ val: 0 }, { val: target, duration: 2, ease: 'power2.out', onUpdate: function () { el.textContent = Math.round(this.targets()[0].val).toLocaleString() } });
+    }
+    ScrollTrigger.create({
+      trigger: '#hero .hero-stats', start: 'top 80%', onEnter: () => {
+        document.querySelectorAll('.hero-stat .num').forEach(el => animateCounter(el));
+      }
+    });
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.submit-btn');
+      btn.textContent = '✦ Заявка отправлена!';
+      btn.style.background = '#2a2a2a';
+      btn.style.color = 'var(--gold)';
+      btn.style.border = '1px solid var(--gold)';
+      setTimeout(() => { btn.textContent = 'Отправить заявку'; btn.style.background = 'var(--gold)'; btn.style.color = 'var(--dark)' }, 3000);
+    }
+  </script>
 </body>
+
 </html>
